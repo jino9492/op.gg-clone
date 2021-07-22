@@ -5,6 +5,7 @@ import tierStay from "../assets/icon-championtier-stay.png";
 import champ32 from "../assets/champion32.png";
 import styled, { css } from "styled-components";
 import ChampionTrendHeader from "./ChampionTrendHeader";
+import ChampionTrendItemCSS from "./ChampionTrendHeader";
 
 interface ChampionTrendItemProps {
     championID?: number;
@@ -17,6 +18,8 @@ interface ChampionTrendItemProps {
 }
 
 const ChampionTrendItemWrapper = styled(ChampionTrendHeader)`
+    ${ChampionTrendItemCSS};
+
     &.champion{
         background-color: white;
 
@@ -27,7 +30,7 @@ const ChampionTrendItemWrapper = styled(ChampionTrendHeader)`
 
         & > .champ{
             display: flex;
-            align-items: center;
+            justify-content: left;
             text-align: left;
 
              & > .change{
@@ -35,10 +38,10 @@ const ChampionTrendItemWrapper = styled(ChampionTrendHeader)`
                 align-items: center;
                 font-size: 14px;
                 line-height: 14px;
-                padding: 0 10px;
-
+                padding: 0 18px;
                 & > img{
-                    margin-right: 2px;
+                    margin-right: 3px;
+                    margin-top: 1px;
                 }
             }
 
@@ -49,15 +52,23 @@ const ChampionTrendItemWrapper = styled(ChampionTrendHeader)`
                 background-position: 0 0;
             }
 
-            & > .champ-desc{
+            & > .champdesc{
                 font-size: 12px;
                 margin-left: 5px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
 
+                & > div{
+                    margin: 0 5px;
+                }
+
                 & > :first-child{
                     font-weight: bold;
+                }
+
+                & > :last-child{
+                    color: #b6b6b6;
                 }
             }
         }

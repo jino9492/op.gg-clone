@@ -130,7 +130,7 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                         </div>
                     </div>
                     <div className="list">
-                        <ChampionTrendToolBar className="list-item">
+                        <ChampionTrendToolBar>
                             <div className="select">탑</div>
                             <div>정글</div>
                             <div>미드</div>
@@ -138,7 +138,7 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                             <div>서포터</div>
                         </ChampionTrendToolBar>
 
-                        <ChampionTrendHeader className="list-item">
+                        <ChampionTrendHeader>
                             <div>#</div>
                             <div>챔피언</div>
                             <div>승률</div>
@@ -170,15 +170,15 @@ const ChampionsWrapper = styled.div`
         }
 
         & > .item-wrap > .item {
-        line-height : 60px;
-        padding: 0 12px;
-        color: rgba(0,0,0,.6);
-        cursor: pointer;
+            line-height : 60px;
+            padding: 0 12px;
+            color: rgba(0,0,0,.6);
+            cursor: pointer;
 
-             &.select{
-                box-shadow: 0px -3px 0px 0px #5383e8 inset;
-                color : #5383e8;
-                font-weight: bold;
+            &.select{
+            box-shadow: 0px -3px 0px 0px #5383e8 inset;
+            color : #5383e8;
+            font-weight: bold;
             }
         }
 
@@ -219,7 +219,8 @@ const ChampionTrendWrapper = styled.div`
 
         & > .item-wrapper{
             display: flex;
-            justify-content:right;
+            justify-content: space-between;
+            width: 210px;
 
 
             & > .item{
@@ -228,19 +229,29 @@ const ChampionTrendWrapper = styled.div`
                 align-items: center;
                 color: gray;
                 font-weight: 500;
-                margin: 0 8px;
                 cursor: pointer;
+                padding: 0 4px;
 
                 & > img{
+                    width: 14px;
                     height:17px;
+                    margin-right: 4px;
+                    margin-top: 2px;
                 }
 
-                & > :not(:last-child)::after{
-
+                &:not(:last-child)::after{
+                    content: "";
+                    width: 1px;
+                    height: 14px;
+                    background-color: #eee;
+                    position: absolute;
+                    top: 40%;
+                    left: 110%;
                 }
 
                 &.select{
                     color : #5383e8;
+                    font-weight: bold;
                     box-shadow: 0px -3px 0px 0px #5383e8 inset;
                 }
             }
@@ -251,15 +262,5 @@ const ChampionTrendWrapper = styled.div`
         height: 100vh;
         background-color: #f7f7f7;
         padding: 20px;
-
-        & > .list-item {
-            display: flex;
-            align-items: center;
-
-            & > div {
-                text-align: center;
-                color : rgba(0,0,0,.6);
-            }
-        }
     }
 `

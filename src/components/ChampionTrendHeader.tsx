@@ -26,8 +26,12 @@ const ChampionTrendHeader = styled.div`
         }
 
         &:nth-child(2){
-            justify-content: left;
-            flex: 3;
+            justify-content: space-evenly;
+            flex: 4;
+
+            &::before{
+                content: "";
+            }
         }
     }
 `
