@@ -34,6 +34,11 @@ const ChampionTrendHeader = styled.div`
                 content: "";
             }
         }
+
+        &.hidden{
+            display:none;
+        }
+
     }
 `
 

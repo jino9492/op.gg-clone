@@ -16,17 +16,25 @@ interface ChampionTrendItemProps {
     position: string[];
     win: string;
     pick: string;
+    ban: string;
     tier: string;
     rank: string;
+
+    trendType?: string;
 }
 
-const ChampionTrendItemWrapper = styled(ChampionTrendHeader) <{ champID: number }>`
+const ChampionTrendItemWrapper = styled(ChampionTrendHeader)`
     ${ChampionTrendItemCSS};
 
     border: 1px solid #eee;
 
     &:not(:lsat-child){
         border-bottom: none;
+    }
+
+    & > .select{
+        color : #5383e8;
+        font-weight: bold;
     }
 
     &.champion{
@@ -51,6 +59,10 @@ const ChampionTrendItemWrapper = styled(ChampionTrendHeader) <{ champID: number 
                 padding: 0 18px;
                 box-sizing: border-box;
 
+                &.isNotTier{
+                    display: none;
+                }
+
                 & > img{
                     margin-right: 3px;
                     margin-top: 1px;
@@ -69,7 +81,6 @@ const ChampionTrendItemWrapper = styled(ChampionTrendHeader) <{ champID: number 
                 width: 32px;
                 height: 32px;
                 background-image: url(${champ32});
-                background-position: 0 -${props => props.champID * 32}px;
             }
 
             & > .champdesc{
@@ -93,6 +104,13 @@ const ChampionTrendItemWrapper = styled(ChampionTrendHeader) <{ champID: number 
             }
         }
     }
+
+    & > .tier{
+
+        &.hidden{
+            display:none;
+        }
+    }
 `
 
 const ChampionTrendItem: React.FC<ChampionTrendItemProps> = (props) => {
@@ -107,22 +125,23 @@ const ChampionTrendItem: React.FC<ChampionTrendItemProps> = (props) => {
     }
 
     return (
-        <ChampionTrendItemWrapper className="list-item champion" champID={props.championID}>
+        <ChampionTrendItemWrapper className="list-item champion">
             <div className="rank">{props.rank}</div>
             <div className="champ">
-                <div className={classnames("change", { up: props.change > 0, down: props.change < 0, })}>
+                <div className={classnames("change", { up: props.change > 0, down: props.change < 0, isNotTier: props.trendType !== "tier" })}>
                     <img src={getTierChangeIcon()} alt="" />
                     {Math.abs(props.change)}
                 </div>
-                <div className="champ-img" />
+                <div className={`champ-img __spc32-${props.championID}`} />
                 <div className="champdesc">
                     <div>{props.name}</div>
                     <div>{props.position}</div>
                 </div>
             </div>
-            <div className="win">{props.win}</div>
-            <div className="pick">{props.pick}</div>
-            <div className="tier"><img src={props.tier} alt="" /></div>
+            <div className={classnames({ select: props.trendType === "pickratio" || props.trendType === "winratio", hidden: props.trendType === "banratio" })}>{props.trendType === "pickratio" ? props.pick : props.win}</div>
+            <div className={classnames({ hidden: props.trendType === "banratio" })}>{props.trendType === "pickratio" ? props.win : props.pick}</div>
+            <div className={classnames({ select: props.trendType === "banratio", hidden: props.trendType !== "banratio" })}>{props.ban}</div>
+            <div className={classnames("tier", { hidden: props.trendType !== "tier" })}><img src={props.tier} /></div>
         </ChampionTrendItemWrapper>
     )
 }
