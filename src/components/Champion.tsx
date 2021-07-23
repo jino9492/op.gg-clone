@@ -3,7 +3,7 @@ import styled from "styled-components";
 import championimage from "../assets/champions.png";
 
 const ChampionWrapper = styled.div<{championId : number}>`
-    margin-top: 16px;
+    margin-top: 26px;
 
     & > div:first-child{
         position : relative;

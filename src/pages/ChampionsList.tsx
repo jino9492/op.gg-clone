@@ -8,6 +8,7 @@ import icon from "../assets/icon-champion-p.png";
 import ChampionTrendItem from "../components/ChampionTrendItem";
 import ChampionTrendHeader from "../components/ChampionTrendHeader";
 import ChampionTrendToolBar from "../components/ChampionTrendToolBar";
+import ChampionTrendModel from "../models/ChampionTrendModel";
 
 interface ChampionListProps {
 
@@ -18,6 +19,8 @@ interface ChampionListState {
     champions: ChampionModel[];
     type: string;
     search: string;
+
+    trendChampions: ChampionTrendModel[];
 }
 
 const ChampionListPageWrapper = styled.div`
@@ -38,6 +41,8 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
             champions: [],
             type: "ALL",
             search: "",
+
+            trendChampions: [],
         }
     }
 
@@ -51,9 +56,26 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                 position: data.position
             })
         );
+
+        const responseTrend = await axios.get("http://opgg.dudco.kr/champion/trend/tier/top");
+        const trendChampions = responseTrend.data.map((data: any) =>
+            new ChampionTrendModel({
+                id: data.id,
+                rank: data.rank,
+                change: data.change,
+                name: data.name,
+                position: data.position,
+                winRate: data.winRate,
+                pickRate: data.pickRate,
+                banRate: data.banRate,
+                tierIcon: data.tierIcon
+            })
+        );
+
         this.setState({
             allChampions,
             champions: allChampions,
+            trendChampions,
         });
     }
 
@@ -146,7 +168,20 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                             <div>티어</div>
                         </ChampionTrendHeader>
 
-                        <ChampionTrendItem />
+                        {
+                            this.state.trendChampions.map(c =>
+                                <ChampionTrendItem
+                                    rank={c.rank}
+                                    championID={c.id}
+                                    change={c.change}
+                                    name={c.name}
+                                    position={c.position}
+                                    win={c.winRate}
+                                    pick={c.pickRate}
+                                    tier={c.tierIcon}
+                                />
+                            )
+                        }
                     </div>
                 </ChampionTrendWrapper>
             </ChampionListPageWrapper>
@@ -155,15 +190,14 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
 }
 
 const ChampionsWrapper = styled.div`
-    background-color: white;
     border-right:1px solid #e9eff4;
 
     & > .header{
         display: flex;
         justify-content: space-between;
+        background-color: white;
         padding: 0 17px;
         border-bottom: 1px solid #e9eff4;
-        margin-bottom: 10px;
         
         & > .item-wrap{
             display: flex;
@@ -197,7 +231,7 @@ const ChampionsWrapper = styled.div`
         display:flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        padding: 0 30px;
+        padding: 20px 30px;
     }
 `
 
@@ -259,7 +293,6 @@ const ChampionTrendWrapper = styled.div`
     }
 
     & > div.list{
-        height: 100vh;
         background-color: #f7f7f7;
         padding: 20px;
     }
